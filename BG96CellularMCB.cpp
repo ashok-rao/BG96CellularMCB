@@ -15,48 +15,22 @@
  * limitations under the License.
  */
 
-#include "AT_CellularPower.h"
-#include "ATHandler.h"
 #include "BG96CellularMCB.h"
-#include "mbed_wait_api.h"
-#include "gpio_api.h"
-#include "mbed_trace.h"
-#include "DigitalOut.h"
-
-#define TRACE_GROUP "CELL"
+#include "BG96CellularMCB_CellularPower.h"
 
 using namespace mbed;
 
 BG96CellularMCB::BG96CellularMCB(FileHandle *fh) : QUECTEL_BG96(fh)
 {
-    CellularPower *power = open_power();
-    // make sure the modem is off first
-    power->off();
 
-//    DigitalOut reset(MBED_CONF_BG96_CELLULAR_MCB_RESET);
-    DigitalOut powerkey(MBED_CONF_BG96_CELLULAR_MCB_POWER);
-//    DigitalOut simsel0(MBED_CONF_BG96_CELLULAR_MCB_SIMSEL0);
-//    DigitalOut simsel1(MBED_CONF_BG96_CELLULAR_MCB_SIMSEL1);
-//    DigitalOut mdmdtr(MBED_CONF_BG96_CELLULAR_MCB_MDMDTR);
-
-/*
-    // start with modem disabled
-    mdmdtr.write(0);
-    simsel0.write(MBED_CONF_BG96_CELLULAR_MCB_SIM_SELECTION);
-    simsel1.write(0);
-
-    reset.write(1);
-    wait_ms(250);
-    reset.write(0);
-*/
-    powerkey.write(1);
-    wait_ms(250);
-    powerkey.write(0);
 }
 
 BG96CellularMCB::~BG96CellularMCB()
 {
-    CellularPower *power = open_power();
-    // make sure the modem is off first
-    power->off();
+
+}
+
+AT_CellularPower * BG96CellularMCB::open_power_impl(ATHandler &at)
+{
+    return new BG96CellularMCB_CellularPower(at);
 }

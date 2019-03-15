@@ -15,22 +15,23 @@
  * limitations under the License.
  */
 
-#ifndef BG96_CELLULAR_MCB_H_
-#define BG96_CELLULAR_MCB_H_
+#ifndef QUECTEL_BG96_MCB_CELLULAR_POWER_H_
+#define QUECTEL_BG96_MCB_CELLULAR_POWER_H_
 
-#include "QUECTEL_BG96.h"
+#include "QUECTEL_BG96_CellularPower.h"
 
 namespace mbed {
 
-class BG96CellularMCB : public QUECTEL_BG96 {
+class BG96CellularMCB_CellularPower : public QUECTEL_BG96_CellularPower {
 public:
-    BG96CellularMCB(FileHandle *fh);
-    virtual ~BG96CellularMCB();
+    BG96CellularMCB_CellularPower(ATHandler &atHandler);
 
-protected:
-    virtual AT_CellularPower *open_power_impl(ATHandler &at);
-
+public: //from AT_CellularPower
+    virtual nsapi_error_t on();
+    virtual nsapi_error_t off();
+    virtual nsapi_error_t reset();
 };
 
 } // namespace mbed
-#endif // BG96_CELLULAR_MCB_H_
+
+#endif // QUECTEL_BG96_MCB_CELLULAR_POWER_H_
